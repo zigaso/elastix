@@ -143,6 +143,9 @@ protected:
   TranslationTransformPointer m_TranslationTransform;
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor. */
   TranslationTransformElastix(const Self &); // purposely not implemented
   /** The private copy constructor. */

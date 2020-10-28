@@ -296,6 +296,9 @@ protected:
   PreComputeGridInformation(void);
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor. */
   RecursiveBSplineTransform(const Self &); // purposely not implemented
   /** The private copy constructor. */

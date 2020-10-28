@@ -214,6 +214,9 @@ protected:
   std::vector<std::string>            m_SubTransformFileNames;
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor. */
   WeightedCombinationTransformElastix(const Self &); // purposely not implemented
   /** The private copy constructor. */

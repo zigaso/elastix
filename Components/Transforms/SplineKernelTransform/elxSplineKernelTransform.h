@@ -250,6 +250,9 @@ protected:
   KernelTransformPointer m_KernelTransform;
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor. */
   SplineKernelTransform(const Self &); // purposely not implemented
   /** The private copy constructor. */

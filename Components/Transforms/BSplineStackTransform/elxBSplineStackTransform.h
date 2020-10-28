@@ -299,6 +299,9 @@ protected:
   PreComputeGridInformation(void);
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor and copy constructor. */
   BSplineStackTransform(const Self &); // purposely not implemented
   void

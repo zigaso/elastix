@@ -230,6 +230,9 @@ protected:
   ReadCenterOfRotationPoint(ReducedDimensionInputPointType & rotationPoint) const;
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor and copy constructor. */
   EulerStackTransform(const Self &); // purposely not implemented
   void

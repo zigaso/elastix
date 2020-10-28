@@ -233,6 +233,9 @@ protected:
   ReadCenterOfRotationPoint(InputPointType & rotationPoint) const;
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor. */
   SimilarityTransformElastix(const Self &); // purposely not implemented
   /** The private copy constructor. */

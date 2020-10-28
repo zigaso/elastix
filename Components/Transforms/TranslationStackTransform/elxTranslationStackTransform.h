@@ -156,6 +156,9 @@ protected:
   ~TranslationStackTransform() override {}
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor and copy constructor. */
   TranslationStackTransform(const Self &); // purposely not implemented
   void

@@ -197,33 +197,18 @@ public:
   /** Typedef that is used in the elastix dll version. */
   typedef typename TElastix::ParameterMapType ParameterMapType;
 
-  /** Cast to ITKBaseType. */
-  virtual ITKBaseType *
+  /** Retrieve this as ITKBaseType. */
+  ITKBaseType *
   GetAsITKBaseType(void)
   {
-    return dynamic_cast<ITKBaseType *>(this);
+    return &(this->GetAsCombinationTransform());
   }
 
-
-  /** Cast to ITKBaseType, to use in const functions. */
-  virtual const ITKBaseType *
+  /** Retrieve this as ITKBaseType (const overload). */
+  const ITKBaseType *
   GetAsITKBaseType(void) const
   {
-    return dynamic_cast<const ITKBaseType *>(this);
-  }
-
-
-  virtual const CombinationTransformType *
-  GetAsCombinationTransform(void) const
-  {
-    return dynamic_cast<const CombinationTransformType *>(this);
-  }
-
-
-  virtual CombinationTransformType *
-  GetAsCombinationTransform(void)
-  {
-    return dynamic_cast<CombinationTransformType *>(this);
+    return &(this->GetAsCombinationTransform());
   }
 
 
@@ -365,6 +350,13 @@ protected:
   AutomaticScalesEstimationStackTransform(const unsigned int & numSubTransforms, ScalesType & scales) const;
 
 private:
+
+  virtual const CombinationTransformType &
+  GetAsCombinationTransform(void) const = 0;
+
+  virtual CombinationTransformType &
+  GetAsCombinationTransform(void) = 0;
+
   /** Member variables. */
   std::unique_ptr<ParametersType> m_TransformParametersPointer{};
   std::string                     m_TransformParametersFileName;

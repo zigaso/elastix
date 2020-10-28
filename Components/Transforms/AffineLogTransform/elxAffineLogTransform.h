@@ -184,6 +184,9 @@ protected:
   ReadCenterOfRotationPoint(InputPointType & rotationPoint) const;
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor. */
   AffineLogTransformElastix(const Self &); // purposely not implemented
   /** The private copy constructor. */

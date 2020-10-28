@@ -139,6 +139,9 @@ protected:
   ~DeformationFieldTransform() override {}
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor. */
   DeformationFieldTransform(const Self &); // purposely not implemented
   /** The private copy constructor. */

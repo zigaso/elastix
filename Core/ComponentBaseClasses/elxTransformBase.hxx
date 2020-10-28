@@ -1318,7 +1318,7 @@ TransformBase<TElastix>::TransformPointsSomePointsVTK(const std::string filename
   /** Apply the transform. */
   elxout << "  The input points are transformed." << std::endl;
   const auto meshTransformer = TransformMeshFilterType::New();
-  meshTransformer->SetTransform(const_cast<CombinationTransformType *>(this->GetAsCombinationTransform()));
+  meshTransformer->SetTransform(&const_cast<CombinationTransformType &>(this->GetAsCombinationTransform()));
   meshTransformer->SetInput(meshReader->GetOutput());
   try
   {

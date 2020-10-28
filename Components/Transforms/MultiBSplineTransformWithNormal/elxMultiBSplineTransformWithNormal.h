@@ -258,6 +258,9 @@ protected:
   PreComputeGridInformation(void);
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor. */
   MultiBSplineTransformWithNormal(const Self &); // purposely not implemented
   /** The private copy constructor. */

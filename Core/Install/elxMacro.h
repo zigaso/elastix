@@ -301,6 +301,9 @@
 #define elxOverrideGetConstMacro(name, type)                                                                           \
   type Get##name() const override { return this->m_##name; }
 
+#define elxGetAsCombinationTransformMacro                                                                              \
+  const CombinationTransformType & GetAsCombinationTransform() const final { return *this; }                           \
+  CombinationTransformType &       GetAsCombinationTransform() final { return *this; }
 
 /**
  *  elxout

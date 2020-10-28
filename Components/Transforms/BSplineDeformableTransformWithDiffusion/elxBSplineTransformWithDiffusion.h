@@ -363,6 +363,9 @@ protected:
   SpacingType m_GridSpacingFactor;
 
 private:
+  /** Implements GetAsCombinationTransform() */
+  elxGetAsCombinationTransformMacro
+
   /** The private constructor. */
   BSplineTransformWithDiffusion(const Self &); // purposely not implemented
   /** The private copy constructor. */
