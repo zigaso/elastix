@@ -19,6 +19,8 @@
 #include "itkParameterMapInterface.h"
 
 // Standard C++ header files:
+#include <cassert>
+#include <clocale>
 #include <cmath> // For fpclassify and FP_SUBNORMAL.
 #include <limits>
 #include <type_traits> // For is_floating_point.
@@ -31,7 +33,29 @@ namespace itk
  * **************** Constructor ***************
  */
 
-ParameterMapInterface::ParameterMapInterface() = default;
+ParameterMapInterface::ParameterMapInterface()
+{
+  // Use C++11 "magic statics" to ensure that the following lambda is called only once.
+  static const int magicStaticsDummy = [] {
+    // Set the locale for numerics, to ensure that a point ('.') is interpreted
+    // as decimal separator, during the conversion of a string to a floating
+    // point value (`float` or `double`).
+    std::setlocale(LC_NUMERIC, "en_US.UTF-8");
+
+    // Now check if a decimal point is supported well.
+    std::istringstream inputStringStream("0.0");
+    double             floatingPoint;
+    inputStringStream >> floatingPoint;
+
+    if (!inputStringStream.eof())
+    {
+      itkGenericExceptionMacro(<< "Critical locale problem: a decimal point is misinterpreted!");
+    }
+
+    return 0;
+  }();
+  (void)magicStaticsDummy;
+}
 
 
 /**

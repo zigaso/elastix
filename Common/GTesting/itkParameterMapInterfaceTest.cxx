@@ -102,3 +102,19 @@ GTEST_TEST(ParameterMapInterface, RetrieveValuesThrowsExceptionWhenConversionFai
 
   EXPECT_THROW(parameterMapInterface->RetrieveValues<double>(parameterName), itk::ExceptionObject);
 }
+
+
+// Tests that a truncation of a floating point value, for example from "6.5" to 6
+// (as was reported by Aurelie, "elastix crash when LANG=fr_FR.UTF-8", 7 April
+// 2021) should not happen.
+GTEST_TEST(ParameterMapInterface, AllowsRetrievalOfFloatingPointValuesWithoutTruncation)
+{
+  const auto        parameterMapInterface = ParameterMapInterface::New();
+  const std::string parameterName("Key");
+  parameterMapInterface->SetParameterMap({ { parameterName, { "-0.5", "0.125", "0.5", "6.5", "1.5e+21" } } });
+
+  const auto retrievedValues = parameterMapInterface->RetrieveValues<double>(parameterName);
+  ASSERT_NE(retrievedValues, nullptr);
+  const std::vector<double> expectedValues{ -0.5, 0.125, 0.5, 6.5, 1.5e+21 };
+  EXPECT_EQ(*retrievedValues, expectedValues);
+}
