@@ -42,6 +42,15 @@ public:
   }
 
 
+  /// Copies `Parameters` and `FixedParameters` from one transform to another.
+  static void
+  CopyParametersAndFixedParameters(itk::TransformBase & targetTransform, const itk::TransformBase & sourceTransform)
+  {
+    targetTransform.SetParameters(sourceTransform.GetParameters());
+    targetTransform.SetFixedParameters(sourceTransform.GetFixedParameters());
+  }
+
+
   /// Converts the name of an ITK Transform class (as returned by
   /// `GetNameOfClass()`) to the corresponding elastix class name
   /// (as returned by `elxGetClassName()`).

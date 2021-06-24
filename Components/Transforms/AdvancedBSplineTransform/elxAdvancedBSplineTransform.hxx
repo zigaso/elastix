@@ -455,12 +455,22 @@ template <class TElastix>
 void
 AdvancedBSplineTransform<TElastix>::ReadFromFile(void)
 {
+  auto & configuration = *(this->m_Configuration);
+
   /** Read spline order and periodicity settings and initialize BSplineTransform. */
-  this->m_SplineOrder = 3;
-  this->GetConfiguration()->ReadParameter(
-    this->m_SplineOrder, "BSplineTransformSplineOrder", this->GetComponentLabel(), 0, 0);
-  this->m_Cyclic = false;
-  this->GetConfiguration()->ReadParameter(this->m_Cyclic, "UseCyclicTransform", this->GetComponentLabel(), 0, 0);
+  unsigned splineOrder = 3;
+
+  if (configuration.ReadParameter(splineOrder, "BSplineTransformSplineOrder", this->GetComponentLabel(), 0, 0))
+  {
+    this->m_SplineOrder = splineOrder;
+  }
+
+  bool cyclic = false;
+
+  if (configuration.ReadParameter(cyclic, "UseCyclicTransform", this->GetComponentLabel(), 0, 0))
+  {
+    this->m_Cyclic = cyclic;
+  }
   this->InitializeBSplineTransform();
 
   /** Read and Set the Grid: this is a BSplineTransform specific task. */
@@ -483,13 +493,13 @@ AdvancedBSplineTransform<TElastix>::ReadFromFile(void)
   /** Get GridSize, GridIndex, GridSpacing and GridOrigin. */
   for (unsigned int i = 0; i < SpaceDimension; ++i)
   {
-    this->m_Configuration->ReadParameter(gridsize[i], "GridSize", i);
-    this->m_Configuration->ReadParameter(gridindex[i], "GridIndex", i);
-    this->m_Configuration->ReadParameter(gridspacing[i], "GridSpacing", i);
-    this->m_Configuration->ReadParameter(gridorigin[i], "GridOrigin", i);
+    configuration.ReadParameter(gridsize[i], "GridSize", i);
+    configuration.ReadParameter(gridindex[i], "GridIndex", i);
+    configuration.ReadParameter(gridspacing[i], "GridSpacing", i);
+    configuration.ReadParameter(gridorigin[i], "GridOrigin", i);
     for (unsigned int j = 0; j < SpaceDimension; ++j)
     {
-      this->m_Configuration->ReadParameter(griddirection(j, i), "GridDirection", i * SpaceDimension + j);
+      configuration.ReadParameter(griddirection(j, i), "GridDirection", i * SpaceDimension + j);
     }
   }
 

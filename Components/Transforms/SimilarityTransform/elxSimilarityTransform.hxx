@@ -83,15 +83,21 @@ SimilarityTransformElastix<TElastix>::ReadFromFile(void)
     indexRead = this->ReadCenterOfRotationIndex(centerOfRotationPoint);
   }
 
-  if (!pointRead && !indexRead)
+  if (pointRead || indexRead)
   {
-    xl::xout["error"] << "ERROR: No center of rotation is specified in the "
-                      << "transform parameter file." << std::endl;
-    itkExceptionMacro(<< "Transform parameter file is corrupt.")
+    /** Set the center in this Transform. */
+    this->m_SimilarityTransform->SetCenter(centerOfRotationPoint);
+  }
+  else
+  {
+    if (!this->HasITKTransformParameters())
+    {
+      xl::xout["error"] << "ERROR: No center of rotation is specified in the "
+                        << "transform parameter file." << std::endl;
+      itkExceptionMacro(<< "Transform parameter file is corrupt.")
+    }
   }
 
-  /** Set the center in this Transform. */
-  this->m_SimilarityTransform->SetCenter(centerOfRotationPoint);
 
   /** Call the ReadFromFile from the TransformBase.
    * BE AWARE: Only call Superclass2::ReadFromFile() after CenterOfRotation

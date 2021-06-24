@@ -302,6 +302,7 @@ ElastixTemplate<TFixedImage, TMovingImage>::ApplyTransform(void)
   elxout << "Calling all ReadFromFile()'s ..." << std::endl;
   this->GetElxResampleInterpolatorBase()->ReadFromFile();
   this->GetElxResamplerBase()->ReadFromFile();
+  this->GetElxTransformBase()->RetrieveITKTransformParametersAndFixedParameters();
   this->GetElxTransformBase()->ReadFromFile();
 
   /** Tell the user. */

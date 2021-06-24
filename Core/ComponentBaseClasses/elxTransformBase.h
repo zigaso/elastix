@@ -22,6 +22,7 @@
 #include "elxMacro.h"
 
 #include "elxBaseComponentSE.h"
+#include "elxConversion.h"
 #include "elxElastixBase.h"
 #include "itkAdvancedTransform.h"
 #include "itkAdvancedCombinationTransform.h"
@@ -267,11 +268,41 @@ public:
   void
   SetFinalParameters(void);
 
+  void
+  RetrieveITKTransformParametersAndFixedParameters(void)
+  {
+    auto &       thisITKTransform = GetSelf();
+    const auto & configuration = *(this->BaseComponentSE<TElastix>::m_Configuration);
+
+    const auto itkParameterValues = configuration.template RetrieveValuesOfParameter<double>("ITKTransformParameters");
+
+    if (itkParameterValues != nullptr)
+    {
+      const auto parameterValues = Conversion::ToOptimizerParameters(*itkParameterValues);
+      m_TransformParametersPointer.reset(new ParametersType(parameterValues));
+      thisITKTransform.SetParameters(parameterValues);
+    }
+
+    const auto itkFixedParameterValues =
+      configuration.template RetrieveValuesOfParameter<double>("ITKTransformFixedParameters");
+
+    if (itkFixedParameterValues != nullptr)
+    {
+      thisITKTransform.SetFixedParameters(Conversion::ToOptimizerParameters(*itkFixedParameterValues));
+    }
+  }
+
 protected:
   /** The default-constructor. */
   TransformBase() = default;
   /** The destructor. */
   ~TransformBase() override = default;
+
+  bool
+  HasITKTransformParameters(void)
+  {
+    return this->BaseComponentSE<TElastix>::m_Configuration->HasParameter("ITKTransformParameters");
+  }
 
   /** Estimate a scales vector
    * AutomaticScalesEstimation works like this:

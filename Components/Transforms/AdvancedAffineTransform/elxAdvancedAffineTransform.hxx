@@ -76,22 +76,6 @@ template <class TElastix>
 void
 AdvancedAffineTransformElastix<TElastix>::ReadFromFile(void)
 {
-  const auto itkParameterValues =
-    this->m_Configuration->template RetrieveValuesOfParameter<double>("ITKTransformParameters");
-
-  if (itkParameterValues != nullptr)
-  {
-    m_AffineTransform->SetParameters(Conversion::ToOptimizerParameters(*itkParameterValues));
-  }
-
-  const auto itkFixedParameterValues =
-    this->m_Configuration->template RetrieveValuesOfParameter<double>("ITKTransformFixedParameters");
-
-  if (itkFixedParameterValues != nullptr)
-  {
-    m_AffineTransform->SetFixedParameters(Conversion::ToOptimizerParameters(*itkFixedParameterValues));
-  }
-
   InputPointType centerOfRotationPoint;
   centerOfRotationPoint.Fill(0.0);
 
@@ -106,7 +90,7 @@ AdvancedAffineTransformElastix<TElastix>::ReadFromFile(void)
   }
   else
   {
-    if (itkFixedParameterValues == nullptr)
+    if (!this->HasITKTransformParameters())
     {
       xl::xout["error"] << "ERROR: No center of rotation is specified in the "
                         << "transform parameter file" << std::endl;

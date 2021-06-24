@@ -72,24 +72,27 @@ EulerTransformElastix<TElastix>::ReadFromFile(void)
    * transform parameter file, this is the new, and preferred
    * way, since elastix 3.402.
    */
-  bool pointRead = this->ReadCenterOfRotationPoint(centerOfRotationPoint);
-
-  if (!pointRead)
+  if (this->ReadCenterOfRotationPoint(centerOfRotationPoint))
   {
-    xl::xout["error"] << "ERROR: No center of rotation is specified in "
-                      << "the transform parameter file" << std::endl;
-    itkExceptionMacro(<< "Transform parameter file is corrupt.")
+    /** Set the center in this Transform. */
+    this->m_EulerTransform->SetCenter(centerOfRotationPoint);
   }
-
-  /** Set the center in this Transform. */
-  this->m_EulerTransform->SetCenter(centerOfRotationPoint);
+  else
+  {
+    if (!this->HasITKTransformParameters())
+    {
+      xl::xout["error"] << "ERROR: No center of rotation is specified in "
+                        << "the transform parameter file" << std::endl;
+      itkExceptionMacro(<< "Transform parameter file is corrupt.")
+    }
+  }
 
   /** Read the ComputeZYX. */
   if (SpaceDimension == 3)
   {
     std::string computeZYX = "false";
-    this->m_Configuration->ReadParameter(computeZYX, "ComputeZYX", 0);
-    if (computeZYX == "true")
+
+    if (this->m_Configuration->ReadParameter(computeZYX, "ComputeZYX", 0) && (computeZYX == "true"))
     {
       this->m_EulerTransform->SetComputeZYX(true);
     }
